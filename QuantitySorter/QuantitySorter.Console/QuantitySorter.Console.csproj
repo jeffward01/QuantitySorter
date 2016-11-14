@@ -64,7 +64,9 @@
     <None Include="NLog.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include=".gitignore" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuantitySorter.Business\QuantitySorter.Business.csproj">
       <Project>{39A9A511-2E8F-4FB6-8287-5249410360E0}</Project>

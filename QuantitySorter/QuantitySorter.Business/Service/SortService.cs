@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Text.RegularExpressions;
 
 namespace QuantitySorter.Business.Service
 {
@@ -26,12 +28,10 @@ namespace QuantitySorter.Business.Service
             var quantites = _fileReadService.LoadJson();
 
             //Fill list
-            foreach (var amount in quantites)
+            foreach (var topping in quantites)
             {
-                foreach (var ingredient in amount.Ingredients)
-                {
-                    _dataTrackerList.Add(ingredient);
-                }
+                var toppings = JsonConvert.SerializeObject(topping.Ingredients);
+                _dataTrackerList.Add(toppings);
             }
             return _dataTrackerList;
         }
@@ -46,7 +46,9 @@ namespace QuantitySorter.Business.Service
             {
                 if (counter < 20)
                 {
-                    Console.WriteLine("{2}). {0}: {1}", pair.Key, pair.Value, counter + 1);
+                    var myKey = Regex.Unescape(JsonConvert.SerializeObject(pair.Key));
+                    myKey = RemoveSpecialCharacters(myKey);
+                    Console.WriteLine("{2}). {0}: {1}", myKey, pair.Value, counter + 1);
                 }
                 else
                 {
@@ -54,6 +56,12 @@ namespace QuantitySorter.Business.Service
                 }
                 counter++;
             }
+        }
+
+        private static string RemoveSpecialCharacters(string str)
+        {
+            var myString = Regex.Replace(str, "[^0-9A-Za-z ]", " ");
+            return Regex.Replace(myString, "     ", " ");
         }
     }
 }

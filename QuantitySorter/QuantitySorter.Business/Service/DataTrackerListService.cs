@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using QuantitySorter.Model.Dto;
 
 namespace QuantitySorter.Business.Service
 {
@@ -10,10 +12,11 @@ namespace QuantitySorter.Business.Service
 
         public void Add(string s)
         {
-            if (!countingList.ContainsKey(s))
-                countingList.Add(s, 1);
+            var listString = JsonConvert.SerializeObject(s);
+            if (!countingList.ContainsKey(listString))
+                countingList.Add(listString, 1);
             else
-                countingList[s]++;
+                countingList[listString]++;
         }
 
         public List<KeyValuePair<string, int>> Sort()
